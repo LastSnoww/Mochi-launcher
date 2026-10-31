@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Main window: only what the custom title bar needs.",
+  "description": "Main window: title bar controls and the account commands.",
   "windows": ["main"],
   "permissions": [
     "core:window:allow-start-dragging",
@@ -12,6 +12,14 @@
     "core:window:allow-is-maximized",
     "core:window:allow-is-minimized",
     "core:event:allow-listen",
-    "core:event:allow-unlisten"
+    "core:event:allow-unlisten",
+    "allow-accounts-list",
+    "allow-account-switch",
+    "allow-account-remove",
+    "allow-account-refresh",
+    "allow-account-head",
+    "allow-auth-login-start",
+    "allow-auth-login-cancel",
+    "allow-auth-open-verification"
   ]
 }

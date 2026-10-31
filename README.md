@@ -19,6 +19,12 @@ pnpm check          # svelte-check
 pnpm lint           # eslint
 ```
 
+## Microsoft sign-in for forks
+
+Sign-in uses a public Azure app registration (device code flow, no client secret). If you fork this launcher, register your own app in the Azure portal, get it approved for the Minecraft API, and put its client ID in `launcher/src-tauri/src/auth/mod.rs` (`CLIENT_ID`). Don't ship a fork with someone else's client ID.
+
+Refresh tokens are stored in the OS keychain (Windows Credential Manager, macOS Keychain, Secret Service on Linux), never in files.
+
 ## License
 
 [GPL-3.0](LICENSE).
