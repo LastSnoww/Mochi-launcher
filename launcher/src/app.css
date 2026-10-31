@@ -1,0 +1,93 @@
+@import 'tailwindcss';
+@import '@fontsource/nunito/400.css';
+@import '@fontsource/nunito/700.css';
+
+/*
+ * Design tokens (spec section 5). Tailwind's default palette, shadows and blurs are
+ * cleared so components can only use these tokens and the UI stays flat.
+ * Contrast for every pair in use is checked by src/lib/design/contrast.test.ts.
+ */
+@theme {
+  --color-*: initial;
+  --color-blush: #e8c8ce;
+  --color-blush-deep: #d7b3bb;
+  --color-rose: #c98597;
+  --color-rose-ink: #4a2731;
+  --color-rose-ink-muted: #64394a;
+  --color-rose-on: #3a1c25;
+  --color-sage: #aab5a9;
+  --color-sage-deep: #9aa699;
+  --color-sage-ink: #2f3a2f;
+  --color-sage-ink-muted: #364236;
+  /* Darkened from the spec's #8A2E2A, which fails AA on sage, sage-deep and blush-deep. */
+  --color-danger: #6b1f1b;
+
+  --font-*: initial;
+  --font-sans: 'Nunito', sans-serif;
+
+  --font-weight-*: initial;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+
+  --radius-*: initial;
+  --radius-card: 10px;
+  --radius-chip: 6px;
+
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --text-shadow-*: initial;
+  --blur-*: initial;
+
+  --default-transition-duration: 180ms;
+  --default-transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* The only animated properties are transform and opacity. */
+@utility motion {
+  transition-property: transform, opacity;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-sage font-sans text-sage-ink antialiased;
+    overflow: hidden;
+    user-select: none;
+    cursor: default;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  /* Rose itself is under 3:1 against every surface, so focus rings use rose-ink. */
+  :focus-visible {
+    outline: 2px solid var(--color-rose-ink);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Set while the game runs or the window is minimized. */
+html[data-paused] *,
+html[data-paused] *::before,
+html[data-paused] *::after {
+  animation-play-state: paused !important;
+  transition: none !important;
+}
