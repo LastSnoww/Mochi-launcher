@@ -1,6 +1,9 @@
 import { mockInstances, type Instance } from './mock';
 
+export type View = 'home' | 'accounts';
+
 class AppState {
+  view = $state<View>('home');
   instances = $state<Instance[]>(mockInstances);
   selectedId = $state(mockInstances[0]!.id);
   running = $state(false);

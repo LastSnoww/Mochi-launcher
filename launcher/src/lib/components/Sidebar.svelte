@@ -1,7 +1,9 @@
 <script lang="ts">
-  import { Plus, Settings, UserRound } from '@lucide/svelte';
+  import { Plus, Settings } from '@lucide/svelte';
+  import { accounts } from '../accounts.svelte';
   import ModeIcon from '../icons/ModeIcon.svelte';
   import { app } from '../state.svelte';
+  import PlayerHead from './PlayerHead.svelte';
 </script>
 
 <aside class="flex w-70 shrink-0 flex-col gap-2 bg-blush px-4 pb-4">
@@ -29,7 +31,10 @@
             selected && 'bg-blush-deep',
           ]}
           aria-current={selected}
-          onclick={() => (app.selectedId = instance.id)}
+          onclick={() => {
+            app.selectedId = instance.id;
+            app.view = 'home';
+          }}
         >
           <ModeIcon {instance} size={20} />
           <span class="min-w-0 flex-1 truncate text-sm font-bold text-rose-ink">{instance.name}</span>
@@ -46,14 +51,32 @@
   </button>
 
   <div class="mt-2 flex items-center gap-2">
-    <button class="flex min-w-0 flex-1 items-center gap-3 rounded-card px-2 py-2 text-left hover:bg-blush-deep">
-      <span class="grid size-8 shrink-0 place-items-center rounded-chip bg-blush-deep text-rose-ink">
-        <UserRound size={18} />
-      </span>
-      <span class="min-w-0">
-        <span class="block truncate text-sm font-bold text-rose-ink">Not signed in</span>
-        <span class="block text-xs text-rose-ink-muted">Add a Microsoft account</span>
-      </span>
+    <button
+      class={[
+        'flex min-w-0 flex-1 items-center gap-3 rounded-card px-2 py-2 text-left hover:bg-blush-deep',
+        app.view === 'accounts' && 'bg-blush-deep',
+      ]}
+      aria-current={app.view === 'accounts'}
+      onclick={() => (app.view = 'accounts')}
+    >
+      {#if accounts.current}
+        {@const account = accounts.current}
+        <PlayerHead src={accounts.headFor(account)} size={32} />
+        <span class="min-w-0">
+          <span class="block truncate text-sm font-bold text-rose-ink">{account.name}</span>
+          {#if accounts.expired[account.uuid]}
+            <span class="block text-xs font-bold text-danger">Sign in again</span>
+          {:else}
+            <span class="block text-xs text-rose-ink-muted">Switch account</span>
+          {/if}
+        </span>
+      {:else}
+        <PlayerHead src={null} size={32} />
+        <span class="min-w-0">
+          <span class="block truncate text-sm font-bold text-rose-ink">Not signed in</span>
+          <span class="block text-xs text-rose-ink-muted">Add a Microsoft account</span>
+        </span>
+      {/if}
     </button>
     <button class="grid size-10 place-items-center rounded-card text-rose-ink hover:bg-blush-deep" aria-label="Settings">
       <Settings size={20} />
